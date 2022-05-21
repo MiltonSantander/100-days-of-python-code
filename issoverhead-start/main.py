@@ -1,25 +1,17 @@
 import requests
 import threading
+import os
 from datetime import datetime
+from dotenv import load_dotenv
 
-MY_LAT = -25.306812  # Your latitude
-MY_LONG = -57.546178  # Your longitude
+load_dotenv()
 
-response = requests.get(url="http://api.open-notify.org/iss-now.json")
-response.raise_for_status()
-data = response.json()
-
-print(data)
-
-iss_latitude = float(data["iss_position"]["latitude"])
-iss_longitude = float(data["iss_position"]["longitude"])
-
-# Your position is within +5 or -5 degrees of the ISS position.
-
+MY_LAT = float(os.getenv("MY_LAT"))
+MY_LONG = float(os.getenv("MY_LONG"))
 
 parameters = {
-    "lat": MY_LAT,
-    "lng": MY_LONG,
+    "lat": MY_LONG,
+    "lng": MY_LAT,
     "formatted": 0,
 }
 
@@ -29,13 +21,23 @@ data = response.json()
 sunrise = int(data["results"]["sunrise"].split("T")[1].split(":")[0])
 sunset = int(data["results"]["sunset"].split("T")[1].split(":")[0])
 
-print("sunset", data["results"])
-print("hora local", (datetime.now()).strftime("%H"))
+
+#Getting iss location
+
+def get_iss_location():
+    iss_response = requests.get(url="http://api.open-notify.org/iss-now.json")
+    iss_response.raise_for_status()
+    iss_data = iss_response.json()
+
+    iss_latitude = float(iss_data["iss_position"]["latitude"])
+    iss_longitude = float(iss_data["iss_position"]["longitude"])
+    return iss_latitude, iss_longitude
 
 
 # If the ISS is close to my current position
 
 def is_iss_close():
+    iss_latitude, iss_longitude = get_iss_location()
     if MY_LAT + 5 >= iss_latitude >= MY_LAT - 5:
         if MY_LONG + 5 >= iss_longitude >= MY_LAT - 5:
             return True
@@ -46,7 +48,7 @@ def is_iss_close():
 
 def is_dark():
     if int((datetime.now()).strftime("%H")) >= sunset - 4:
-        print("esta oscuro")
+        print("Ya es de nocheeee")
         return True
     return False
 

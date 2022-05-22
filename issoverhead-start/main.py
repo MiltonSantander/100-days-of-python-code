@@ -1,5 +1,5 @@
 import requests
-import threading
+import time
 import os
 from datetime import datetime
 from dotenv import load_dotenv
@@ -61,13 +61,8 @@ def send_email():
 
 # BONUS: run the code every 60 seconds.
 
-def loop():
-    new_thread = threading.Timer(60.0, loop)
-    new_thread.daemon = True
-    new_thread.start()
+while True:
+    time.sleep(60)
     if is_dark():
         if is_iss_close():
             send_email()
-
-
-loop()

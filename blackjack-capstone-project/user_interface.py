@@ -15,7 +15,7 @@ def print_user_hand(user_cards, user_score):
 
 
 def print_cpu_hand(cpu_cards, cpu_score):
-    print((user_hand.replace("#", cpu_cards)).replace("$", cpu_score))
+    print((cpu_hand.replace("#", cpu_cards)).replace("$", cpu_score))
 
 
 def print_hit_or_pass():

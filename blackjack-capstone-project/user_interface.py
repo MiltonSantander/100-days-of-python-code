@@ -1,31 +1,29 @@
-ask_to_play = "Do you want to play a game of Blackjack? Type 'y' or 'n':"
-user_hand = "Your cards: #, current score: $"
-cpu_hand = "Computer's first card: #"
-hit_or_pass = "Type 'y' to get another card, type 'n' to pass: "
-final_user_hand = "Your final hand: #, final score: $"
-final_cpu_hand = "Computer's final hand: #, final score: $"
-
-
 def print_ask_to_play():
-    return input(ask_to_play)
+    return input("Do you want to play a game of Blackjack? Type 'y' or 'n':")
 
 
 def print_user_hand(user_cards, user_score):
-    print((user_hand.replace("#", user_cards)).replace("$", user_score))
+    print(f"Your cards: {user_cards}, current score: {user_score}")
 
 
 def print_cpu_hand(cpu_cards, cpu_score):
-    print((cpu_hand.replace("#", cpu_cards)).replace("$", cpu_score))
+    print(f"Computer's first card: {cpu_cards}, current score: {cpu_score}")
 
 
 def print_hit_or_pass():
-    return input(hit_or_pass)
+    return input("Type 'y' to get another card, type 'n' to pass: ")
 
 
 def print_final_user_hand(user_cards, user_score):
-    print((final_user_hand.replace("#", user_cards)).replace("$", user_score))
+    print(f"Your final hand: {user_cards}, final score: {user_score}")
 
 
 def print_final_cpu_hand(cpu_cards, cpu_score):
-    print((final_cpu_hand.replace("#", cpu_cards)).replace("$", cpu_score))
+    print(f"Computer's final hand: {cpu_cards}, final score: {cpu_score}")
 
+
+def user_win(param):
+    if param:
+        print("Ganaste! 🎉")
+    else:
+        print("Has perdido ☹")

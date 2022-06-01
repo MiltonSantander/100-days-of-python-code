@@ -6,8 +6,8 @@ def print_user_hand(user_cards, user_score):
     print(f"Your cards: {user_cards}, current score: {user_score}")
 
 
-def print_cpu_hand(cpu_cards, cpu_score):
-    print(f"Computer's first card: {cpu_cards}, current score: {cpu_score}")
+def print_cpu_hand(cpu_cards):
+    print(f"Computer's first card: {cpu_cards[0]}")
 
 
 def print_hit_or_pass():

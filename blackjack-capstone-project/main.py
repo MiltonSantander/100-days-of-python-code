@@ -2,36 +2,64 @@ import user_interface
 import dealer
 import score
 
-user_new_hand = []
-cpu_new_hand = []
+score = score.Score()
+dealer = dealer.Dealer()
 
 
-def play(param):
-    if "n" == param or param == "y":
-        if param == "y":
-            serve_new_hand()
-        elif param == "n":
-            print("no se juegas")
+def play():
+    dealer.cards["user_cards"] = []
+    dealer.cards["cpu_cards"] = []
+    user_input = user_interface.print_ask_to_play()
+    if "n" == user_input or user_input == "y":
+        if user_input == "y":
+            dealer.serve_new_hand()
+            check_winner(False)
+        if user_input == "n":
+            print("no se juega")
             return
     else:
-        new_user_input = user_interface.print_ask_to_play()
-        play(new_user_input)
+        play()
 
 
-def serve_new_hand():
-    cpu_new_hand.append(dealer.deal_card())
-    cpu_score, cpu_cards = score.calculate_score(cpu_new_hand)
-
-    user_new_hand.append(dealer.deal_card())
-    user_new_hand.append(dealer.deal_card())
-    user_score, user_cards = score.calculate_score(user_new_hand)
-    if user_score == 21:
-        user_interface.print_final_user_hand(str(user_cards), str(user_score))
-        user_interface.print_final_cpu_hand(str(cpu_cards), str(cpu_score))
+def check_winner(game_over):
+    score.calculate_score(dealer.cards["user_cards"], dealer.cards["cpu_cards"])
+    if not game_over:
+        if score.scores["user_score"] < 21:
+            user_interface.print_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
+            user_interface.print_cpu_hand(dealer.cards["cpu_cards"])
+            hit_or_pass()
+        if score.scores["user_score"] > 21:
+            user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
+            user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
+            user_interface.user_win(False)
+            play()
     else:
-        user_interface.print_user_hand(str(user_cards), str(user_score))
-        user_interface.print_cpu_hand(str(cpu_cards), str(cpu_score))
+        if score.scores["user_score"] < score.scores["cpu_score"] or score.scores["user_score"] > 21:
+            user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
+            user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
+            user_interface.user_win(False)
+            play()
+        if score.scores["cpu_score"] < score.scores["user_score"] <= 21:
+            user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
+            user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
+            user_interface.user_win(True)
+            play()
+        if score.scores["user_score"] == score.scores["cpu_score"]:
+            user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
+            user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
+            user_interface.user_win(False)
+            play()
 
 
-user_input = user_interface.print_ask_to_play()
-play(user_input)
+def hit_or_pass():
+    user_input = user_interface.print_hit_or_pass()
+    if user_input == "y":
+        dealer.cards["user_cards"].append(dealer.deal_card())
+        check_winner(False)
+    if user_input == "n":
+        check_winner(True)
+    else:
+        hit_or_pass()
+
+
+play()

@@ -17,6 +17,14 @@ class Dealer:
             self.cards["user_cards"].append(self.deal_card())
             self.cards["cpu_cards"].append(self.deal_card())
 
-    def change_ace_value(self, cards):
-        cards.remove(11)
-        cards.append(1)
+    def change_ace_value(self, is_user_cards):
+        if is_user_cards:
+            self.cards["user_cards"].remove(11)
+            self.cards["user_cards"].append(1)
+        else:
+            self.cards["cpu_cards"].remove(11)
+            self.cards["cpu_cards"].append(1)
+
+    def clear_hand(self):
+        self.cards["user_cards"].clear()
+        self.cards["cpu_cards"].clear()

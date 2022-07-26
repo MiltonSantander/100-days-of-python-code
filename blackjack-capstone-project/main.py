@@ -22,7 +22,7 @@ def play():
 
 
 def check_winner(game_over):
-    score.calculate_score(dealer.cards["user_cards"], dealer.cards["cpu_cards"])
+    score.calculate_score(dealer)
     if not game_over:
         if score.scores["user_score"] < 21:
             user_interface.print_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
@@ -32,22 +32,26 @@ def check_winner(game_over):
             user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
             user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
             user_interface.user_win(False)
+            dealer.clear_hand()
             play()
     else:
         if score.scores["user_score"] < score.scores["cpu_score"] or score.scores["user_score"] > 21:
             user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
             user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
             user_interface.user_win(False)
+            dealer.clear_hand()
             play()
         if score.scores["cpu_score"] < score.scores["user_score"] <= 21:
             user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
             user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
             user_interface.user_win(True)
+            dealer.clear_hand()
             play()
         if score.scores["user_score"] == score.scores["cpu_score"]:
             user_interface.print_final_user_hand(dealer.cards["user_cards"], score.scores["user_score"])
             user_interface.print_final_cpu_hand(dealer.cards["cpu_cards"], score.scores["cpu_score"])
             user_interface.user_win(False)
+            dealer.clear_hand()
             play()
 
 
